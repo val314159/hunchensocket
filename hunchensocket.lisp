@@ -15,6 +15,9 @@
 (defun control-frame-p (opcode)
   (plusp (logand #x8 opcode)))
 
+(defun listening-p (acceptor)
+  (hunchentoot::acceptor-listen-socket acceptor))
+
 (defvar *websocket-socket* nil
   "The currently active WebSocket socket")
 
