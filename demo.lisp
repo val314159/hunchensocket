@@ -44,11 +44,15 @@
 (defmethod hunchensocket:text-message-received ((room chat-room) user message)
   (broadcast room "~a says ~a" (name user) message))  
 
+;; add easy handler to /yo
+(hunchentoot:define-easy-handler (say-yo :uri "/yo") (name)
+  (format nil "<h1>Hey~@[ ~A~]!</h1>" name))
+
 ;; Finally, start the server. `hunchensocket:websocket-acceptor` works
 ;; just like `hunchentoot:acceptor`, and you can probably also use
 ;; `hunchensocket:websocket-ssl-acceptor`.
 
-(defvar *server* (make-instance 'hunchensocket:websocket-acceptor :port 12345))
+(defvar *server* (make-instance 'hunchensocket:websocket-easy-acceptor :port 12345))
 
 (unless (hunchensocket:listening-p *server*)
   (hunchentoot:start *server*))
