@@ -51,6 +51,21 @@
 		      (ps*-from-string message)
 		      message)))
 
+(define-easy-handler (app-js :uri "/app.js") ()
+  (ps (progn
+	(setf -e ((@ document create) "div"))
+	(setf origin (+ "ws" ((@ location origin substr) 4)))
+	(setf ws (new (-web-socket (+ origin "/qwert"))))
+	(defun restart (evt)
+	  (set-timeout app 500))
+	(defun onmessage (evt)
+	  55)
+	  (list 11 223)
+	  (setf (@ ws onopen) #'onopen)
+	  (setf (@ ws onmessage) #'onmessage)
+	  (list 11 22)
+	  )))
+
 (define-easy-handler (index :uri "/") () "
 <script>
 (function app(){
@@ -71,6 +86,6 @@
     })()</script>")
 
 (defun main ()
-  (start (make-instance 'websocket-easy-acceptor :port 80))
+  (start (make-instance 'websocket-easy-acceptor :port 8080))
   (format t "listening...~%")
   (sleep 600))
